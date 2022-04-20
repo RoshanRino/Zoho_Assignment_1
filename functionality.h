@@ -2,8 +2,9 @@
 using namespace std;
 #include <vector>
 #include <fstream>
-
 int numberOfItems,noOfCustomers,invoiceNo=1514;
+
+/*--------------------------------------------------------------------------------------------------------------*/
 /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 class shopStock
 {
@@ -57,6 +58,8 @@ class shopStock
     }
 
 };
+/*--------------------------------------------------------------------------------------------------------------*/
+
 vector <shopStock> shopData;
 class order
 {
@@ -92,6 +95,7 @@ public:
             orderDetails.push_back(t.orderDetails[i]);
     }
 };
+/*--------------------------------------------------------------------------------------------------------------*/
 
 class customer
 {
@@ -125,7 +129,7 @@ public:
         return 0;
     }
 };
-
+/*--------------------------------------------------------------------------------------------------------------*/
 
 class Admin
 {
@@ -139,13 +143,14 @@ public:
         return 0;
     }
 };
+/*--------------------------------------------------------------------------------------------------------------*/
 /*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
 ifstream shop("z-kart_db.txt");
 ifstream cust("zusers_db.txt");
 vector <customer> customerData;
 Admin admin;
 
-
+/*--------------------------------------------------------------------------------------------------------------*/
 void loadData()
 {
     string shop_cat,shop_brand,shop_model;
@@ -160,7 +165,7 @@ void loadData()
        customerData.push_back(customer(cust_mail,cust_pass,cust_name,cust_mob));
     }
 }
-
+/*--------------------------------------------------------------------------------------------------------------*/
 
 int login()
 {
@@ -182,6 +187,7 @@ int login()
     cout<<"The Email or Password you Entered is Incorrect"<<endl<<endl<<endl<<endl;
     return 0;
 }
+/*--------------------------------------------------------------------------------------------------------------*/
 
 void signUp()
 {
@@ -198,6 +204,7 @@ void signUp()
     cout<<"SignUp Successful"<<endl<<endl<<endl<<endl;
     customerData.push_back(customer(mail,pass,name,mob));
 }
+/*--------------------------------------------------------------------------------------------------------------*/
 
 int userInput()
 {
@@ -209,6 +216,7 @@ int userInput()
     cin>>a;
     return a;
 }
+/*--------------------------------------------------------------------------------------------------------------*/
 
 int adminLog()
 {
@@ -228,36 +236,42 @@ int adminLog()
     cout<<"The Email or Password you Entered is Incorrect"<<endl<<endl<<endl<<endl;
     return 0;
 }
-    void displayMobiles()
+/*--------------------------------------------------------------------------------------------------------------*/
+void displayMobiles()
+{
+    system("cls");
+    cout<<"Enter ItemId to Add to cart"<<endl<<endl;
+    for (int i=0;i<numberOfItems;i++)
     {
-        system("cls");
-        cout<<"Enter ItemId to Add to cart"<<endl<<endl;
-        for (int i=0;i<numberOfItems;i++)
-        {
-            if(shopData[i].catagory=="Mobile")
-                shopData[i].display();
-        }
+        if(shopData[i].catagory=="Mobile")
+            shopData[i].display();
     }
-    void displayTablet()
+}
+ /*--------------------------------------------------------------------------------------------------------------*/
+
+void displayTablet()
+{
+    system("cls");
+    cout<<"Enter ItemId to Add to cart"<<endl<<endl;
+    for (int i=0;i<numberOfItems;i++)
     {
-        system("cls");
-        cout<<"Enter ItemId to Add to cart"<<endl<<endl;
-        for (int i=0;i<numberOfItems;i++)
-        {
-            if(shopData[i].catagory=="Tablet")
-                shopData[i].display();
-        }
+        if(shopData[i].catagory=="Tablet")
+            shopData[i].display();
     }
-    void displayLaptop()
+}
+/*--------------------------------------------------------------------------------------------------------------*/
+
+void displayLaptop()
+{
+    system("cls");
+    cout<<"Enter ItemId to Add to cart"<<endl<<endl;
+    for (int i=0;i<numberOfItems;i++)
     {
-        system("cls");
-        cout<<"Enter ItemId to Add to cart"<<endl<<endl;
-        for (int i=0;i<numberOfItems;i++)
-        {
-            if(shopData[i].catagory=="Laptop")
-                shopData[i].display();
-        }
+        if(shopData[i].catagory=="Laptop")
+            shopData[i].display();
     }
+}
+/*--------------------------------------------------------------------------------------------------------------*/
 void displayOptions(int currentCustomer)
 {
     order temp;
@@ -306,6 +320,8 @@ void displayOptions(int currentCustomer)
                 cout<<"Order placed Successfully"<<endl;
                 invoiceNo++;
                 customerData[currentCustomer-1].history.push_back(temp);
+                for (int j=0;j<temp.orderDetails.size();j++)
+                    shopData[temp.orderDetails[j].itemId].stock--;
                 return;
             }
             break;
@@ -323,3 +339,46 @@ void displayOptions(int currentCustomer)
         }
     }
 }
+/*--------------------------------------------------------------------------------------------------------------*/
+
+void displayLowStock()
+{
+    system("cls");
+    cout<<"The Following Items have Stock Below 10:"<<endl<<endl;
+    for(int i=0;i<shopData.size();i++)
+        if(shopData[i].stock<10)
+           shopData[i].display();
+}
+/*--------------------------------------------------------------------------------------------------------------*/
+
+void addStock()
+{
+    int id,number;
+    cout<<"Enter item Id to Place Order: ";
+    cin>>id;
+    cout<<"Enter number of Items to Order: ";
+    cin>>number;
+    shopData[id-1].stock+=number;
+}
+/*--------------------------------------------------------------------------------------------------------------*/
+
+void adminFunction()
+{
+    while(1)
+    {
+        int userOption;
+        displayLowStock();
+        cout<<endl<<"Press 1 to place order"<<endl<<"Press 2 to exit"<<endl;
+        cin>>userOption;
+        switch (userOption)
+        {
+        case 1:
+            addStock();
+            break;
+        default:
+            return;
+        }
+    }
+}
+/*--------------------------------------------------------------------------------------------------------------*/
+/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
