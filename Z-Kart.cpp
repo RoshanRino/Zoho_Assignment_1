@@ -6,7 +6,6 @@ int main()
     loadData();
     while(1)
     {
-//        system("cls");
         int tem;
         input=userInput();
         switch (input)
@@ -24,7 +23,7 @@ int main()
         case 3:
             if(adminLog());
             {
-
+                adminFunction();
             }
               break;
         case 4:
