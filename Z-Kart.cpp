@@ -6,24 +6,25 @@ int main()
     loadData();
     while(1)
     {
+        writeData();
         int tem;
         input=userInput();
         switch (input)
         {
         case 1:
-            tem=login();
+            tem=Customer::login();
             if(tem)
             {
                 displayOptions(tem);
             }
             break;
         case 2:
-            signUp();
+            Customer::signUp();
             break;
         case 3:
-            if(adminLog());
+            if(Admin::login());
             {
-                adminFunction();
+                Admin::adminFunction();
             }
               break;
         case 4:
