@@ -78,6 +78,7 @@ public:
             cout<<"Your Cart is Empty"<<endl;
             return;
         }
+        cout<<"//////////////////////////////////////////////////"<<endl;
         cout<<"Invoice Number  "<<invoiceNumber<<endl;
         cout<<"Date 19-April-2022"<<endl<<endl<<endl;
         cout<<"Catagory       Brand          Model          Price"<<endl;
@@ -86,6 +87,7 @@ public:
         cout<<endl<<endl<<endl;
         cout<<"Total Cost : "<<total<<endl;
         cout<<"//////////////////////////////////////////////////"<<endl;
+        cout<<endl;
     }
     order(const order &t)
     {
