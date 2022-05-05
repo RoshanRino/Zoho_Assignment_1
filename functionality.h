@@ -1,22 +1,24 @@
 #include "Class_Admin.h"
 /*--------------------------------------------------------------------------------------------------------------*/
 void loadData()
-{
-    string shop_cat,shop_brand,shop_model;
-    string cust_mail,cust_pass,cust_name,cust_mob;
-    int shop_price,shop_stock;
-    fileEdit.open("z-kart_db.txt",ios::in);
-    while(fileEdit>>shop_cat>>shop_brand>>shop_model>>shop_price>>shop_stock)
+{    
+    KartData::Products products;
+    fstream input("Shop_Data.bin", ios::in | ios::binary);
+    products.ParseFromIstream(&input);
+    for (auto iter = products.product().begin(); iter != products.product().end(); iter++)
     {
-       shopData.push_back(ShopStock(shop_cat,shop_brand,shop_model,shop_price,shop_stock));
+        ShopStock temp(iter->catagory(), iter->brand(), iter->model(), iter->price(), iter->stock());
+        shopData.push_back(temp);
     }
-    fileEdit.close();
-    fileEdit.open("zusers_db.txt",ios::in);
-    while(fileEdit>>cust_mail>>cust_pass>>cust_name>>cust_mob)
+
+    UserData::Users userData;
+    fstream input2("Customer_Data.bin", ios::in | ios::binary);
+    userData.ParseFromIstream(&input2);
+    for (auto iter = userData.users().begin(); iter != userData.users().end(); iter++)
     {
-       customerData.push_back(Customer(cust_mail,cust_pass,cust_name,cust_mob));
+        Customer temp(iter->mail(),iter->password(),iter->name(),iter->number());
+        customerData.push_back(temp);
     }
-    fileEdit.close();
 }
 /*--------------------------------------------------------------------------------------------------------------*/
 
@@ -69,7 +71,7 @@ void displayLaptop()
 /*--------------------------------------------------------------------------------------------------------------*/
 void displayOptions(int currentCustomer)
 {
-    Order temp;
+    Order temp(currentCustomer);
     while(1)
     {
         int input,item;
@@ -123,7 +125,7 @@ void displayOptions(int currentCustomer)
             break;
         case 4:
             int a;
-            temp.display();
+            temp.display(currentCustomer);
             cout<<"Press 1 to continue Shopping"<<endl;
             cout<<"Press 2 to purchase";
             cin>>a;
@@ -142,7 +144,7 @@ void displayOptions(int currentCustomer)
                 if(!customerData[currentCustomer-1].history.size())
                     cout<<"You have no previous Orders"<<endl<<endl<<endl;
             for(int i=0;i<customerData[currentCustomer-1].history.size();i++)
-                customerData[currentCustomer-1].history[i].display();
+                customerData[currentCustomer-1].history[i].display(currentCustomer);
              break;
         case 6:
             for (int j=0;j<temp.OrderDetails.size();j++)
@@ -155,13 +157,7 @@ void displayOptions(int currentCustomer)
 }
 void writeData()
 {
-    fileEdit.open("z-kart_db.txt",ios::out);
-    for (int i=0;i<shopData.size();i++)
-        shopData[i].Save();
-    fileEdit.close();
-    fileEdit.open("zusers_db.txt",ios::out);
-    for(int i=0;i<customerData.size();i++)
-        customerData[i].Save();
-    fileEdit.close();
+    Customer::Save();
+    ShopStock::Save();
 }
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/

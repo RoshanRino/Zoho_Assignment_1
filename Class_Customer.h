@@ -1,4 +1,5 @@
 #include "Class_Order.h"
+#include "users.pb.h"
 /*--------------------------------------------------------------------------------------------------------------*/
 class Customer;
 int noOfCustomers;
@@ -120,9 +121,24 @@ public:
         return 0;
     }
 
-    void Save()
+     static void Save()
     {
-        fileEdit.width(30);
+        
+        UserData::Users userData;
+
+        for (int i = 0; i < customerData.size(); i++)
+        {
+            UserData::User* u;
+            u = userData.add_users();
+            u->set_mail(customerData[i].eMail);
+            u->set_name(customerData[i].name);
+            u->set_number(customerData[i].mobile);
+            u->set_password(customerData[i].passWord);
+        }
+        fstream output("Customer_Data.bin", ios::out | ios::trunc | ios::binary);
+        userData.SerializeToOstream(&output);
+
+        /*fileEdit.width(30);
         fileEdit.fill(' ');
         fileEdit<<left<<eMail;
         fileEdit.width(15);
@@ -133,7 +149,7 @@ public:
         fileEdit<<name;
         fileEdit.width(15);
         fileEdit.fill(' ');
-        fileEdit<<mobile<<endl;
+        fileEdit<<mobile<<endl;*/
     }
     static bool checkExistance(string b)
     {

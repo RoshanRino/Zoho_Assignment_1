@@ -4,14 +4,16 @@ int invoiceNo=1514;
 class Order
 {
     int invoiceNumber;
+    int id;
 public:
     int total=0;
     vector <ShopStock> OrderDetails;
-    Order()
+    Order(int curr)
     {
+        id = curr;
         invoiceNumber=invoiceNo;
     }
-    void display()
+    void display(int current)
     {
         if(OrderDetails.empty())
         {
@@ -23,7 +25,8 @@ public:
         cout<<"Date 19-April-2022"<<endl<<endl<<endl;
         cout<<"Catagory       Brand          Model          Price"<<endl;
         for (int i=0;i<OrderDetails.size();i++)
-            OrderDetails[i].displayOrder();
+            if(current == id)
+                OrderDetails[i].displayOrder();
         cout<<endl<<endl<<endl;
         cout<<"Total Cost : "<<total<<endl;
         cout<<"//////////////////////////////////////////////////"<<endl;
@@ -52,6 +55,7 @@ public:
     Order(const Order &t)
     {
         invoiceNumber=t.invoiceNumber;
+        id = t.id;
         total=t.total;
         for(int i=0;i<t.OrderDetails.size();i++)
             OrderDetails.push_back(t.OrderDetails[i]);

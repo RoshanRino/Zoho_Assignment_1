@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package KartData;
+
+message Product{
+	optional string catagory =1;
+	optional string brand =2;
+	optional string model =3;
+	optional int32 price =4;
+	optional int32 stock =5;
+}
+
+message Products {
+	repeated Product product =1;
+}

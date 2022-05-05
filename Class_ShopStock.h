@@ -3,9 +3,8 @@ using namespace std;
 #include <vector>
 #include <fstream>
 #include <string.h>
+#include "kart.pb.h"
 fstream fileEdit;
-
-
 /*--------------------------------------------------------------------------------------------------------------*/
 class ShopStock;
 int numberOfItems;
@@ -19,7 +18,7 @@ class ShopStock
     int stock;
     int price;
     string catagory;
-    ShopStock(string cat,string bd,string mod,int cost,float number)
+    ShopStock(string cat,string bd,string mod,int cost,int number)
     {
         itemId=numberOfItems++;
         catagory=cat;
@@ -75,9 +74,24 @@ class ShopStock
         fileEdit.fill(' ');
         fileEdit<<price<<endl;
     }
-    void Save()
+    static void Save()
     {
-        fileEdit.width(15);
+        KartData::Products shopStock;
+        for (int i = 0; i < shopData.size(); i++)
+        {
+            KartData::Product* p;
+            p=shopStock.add_product();
+            p->set_brand(shopData[i].brand);
+            p->set_catagory(shopData[i].catagory);
+            p->set_model(shopData[i].model);
+            p->set_price(shopData[i].price);
+            p->set_stock(shopData[i].stock);
+        }
+        fstream output("Shop_Data.bin", ios::out | ios::trunc | ios::binary);
+        shopStock.SerializeToOstream(&output);
+          
+
+        /*fileEdit.width(15);
         fileEdit.fill(' ');
         fileEdit<<left<<catagory;
         fileEdit.width(15);
@@ -91,6 +105,6 @@ class ShopStock
         fileEdit<<price;
         fileEdit.width(15);
         fileEdit.fill(' ');
-        fileEdit<<stock<<endl;
+        fileEdit<<stock<<endl;*/
     }
 };
